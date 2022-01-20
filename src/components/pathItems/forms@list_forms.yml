@@ -1,0 +1,53 @@
+get:
+  tags: [Forms]
+  operationId: list-forms
+  summary: List forms
+  description: Returns a list of forms.
+  parameters:
+    - name: is_archived
+      description: |
+        If set to 1, archived forms will be returned instead of active forms.
+      in: query
+      schema:
+        type: number
+        example: 1
+        default: 0
+  responses:
+    "200":
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+          example:
+            [
+              {
+                "id": "1258325",
+                "name": "Jr High Winter Camp",
+                "url_slug": "winter-camp-signup",
+                "is_archived": "0",
+                "created_on": "2020-01-12 09:14:27",
+              },
+              {
+                "id": "1275235",
+                "name": "Volunteer Application",
+                "url_slug": "volunteer-application",
+                "is_archived": "0",
+                "created_on": "2020-5-18 04:44:34",
+              },
+              {
+                "id": "7",
+                "name": "Small Group Interest",
+                "url_slug": "small-group-signup",
+                "is_archived": "0",
+                "created_on": "2020-9-11 11:17:34",
+              },
+            ]
+  x-codeSamples:
+    - lang: PHP
+      source: |
+        require_once('breeze/breeze.php');
+        $breeze = new Breeze('your_api_key');
+        $forms = $breeze->url('https://yoursubdomain.breezechms.com/api/forms/list_forms');

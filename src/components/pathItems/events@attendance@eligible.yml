@@ -1,0 +1,44 @@
+get:
+  tags: [Check In]
+  operationId: list-eligible-people
+  summary: List eligible people
+  description: List eligible people.
+  responses:
+    "200":
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+          example:
+            [
+              {
+                "id": "123",
+                "first_name": "Alex",
+                "force_first_name": "Alexa",
+                "last_name": "Amaz",
+                "path": "img/profiles/generic/gray.png",
+              },
+              {
+                "id": "124",
+                "first_name": "Cortana",
+                "force_first_name": "Cortana",
+                "last_name": "Rogers",
+                "path": "img/profiles/generic/gray.png",
+              },
+              {
+                "id": "125",
+                "first_name": "Siri",
+                "force_first_name": "Siri",
+                "last_name": "Macintosh",
+                "path": "img/profiles/generic/gray.png",
+              },
+            ]
+  x-codeSamples:
+    - lang: PHP
+      source: |
+        require_once('breeze/breeze.php');
+        $breeze = new Breeze('your_api_key');
+        $remove = $breeze->url('https://yoursubdomain.breezechms.com/api/events/attendance/eligible?instance_id=1234567');

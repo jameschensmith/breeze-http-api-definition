@@ -1,0 +1,33 @@
+get:
+  tags: [Volunteers]
+  operationId: remove-volunteer
+  summary: Remove volunteer
+  description: Unschedule a volunteer from a specific event.
+  parameters:
+    - name: instance_id
+      description: |
+        The id of the event instance you want to unschedule the volunteer from.
+      in: query
+      schema:
+        type: number
+        example: 123456
+    - name: person_id
+      description: The id of the person you wish to unschedule.
+      in: query
+      schema:
+        type: number
+        example: 654321
+  responses:
+    "200":
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: boolean
+          example: true
+  x-codeSamples:
+    - lang: PHP
+      source: |
+        require_once('breeze/breeze.php');
+        $breeze = new Breeze('your_api_key');
+        $response = $breeze->url('https://yoursubdomain.breezechms.com/api/volunteers/remove?instance_id=123456&person_id=654321');

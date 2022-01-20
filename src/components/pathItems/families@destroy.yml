@@ -1,0 +1,33 @@
+get:
+  tags: [Families]
+  operationId: destroy-family
+  summary: Destroy family
+  description: Destroys a family.
+  parameters:
+    - name: people_ids_json
+      description: |
+        The id of the person belonging to a family you'd like to destroy. This
+        does not delete any people, it simply removes their association with
+        the family. Only one person id from the family is needed (e.g. if you
+        specify one person in a family of seven, all 7 people are removed from
+        the family). Passing in multiple people ids (where those people are in
+        different families) allows developers to destroy multiple families in a
+        single call.
+      in: query
+      schema:
+        type: string
+      example: "[5555555,6666666]"
+  responses:
+    "200":
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+          example: { "success": true }
+  x-codeSamples:
+    - lang: PHP
+      source: |
+        require_once('breeze/breeze.php');
+        $breeze = new Breeze('your_api_key');
+        $response = $breeze->url('https://yoursubdomain.breezechms.com/api/families/destroy?people_ids_json=[4444444,5555555]');

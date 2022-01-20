@@ -1,0 +1,26 @@
+get:
+  tags: [Contributions]
+  operationId: delete-contribution
+  summary: Delete contribution
+  description: Delete an existing contribution.
+  parameters:
+    - name: payment_id
+      description: The ID of the payment that should be deleted.
+      in: query
+      schema:
+        type: number
+        example: 56789123
+  responses:
+    "200":
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+          example: { "success": true, "errors": null }
+  x-codeSamples:
+    - lang: PHP
+      source: |
+        require_once('breeze/breeze.php');
+        $breeze = new Breeze('your_api_key');
+        $response = $breeze->url('https://yoursubdomain.breezechms.com/api/giving/delete?payment_id=56789123');

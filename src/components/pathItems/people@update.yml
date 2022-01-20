@@ -1,0 +1,59 @@
+get:
+  tags: [People]
+  operationId: update-person
+  summary: Update person
+  description: Update a person in your database.
+  parameters:
+    - name: person_id
+      description: The id of the person to update.
+      in: query
+      schema:
+        type: number
+        example: 15235634
+    - name: fields_json
+      description: |
+        Additional fields to update. These fields are passed as a JSON encoded
+        array of fields, each containing a field id, field type, response, and
+        in some cases, more information. The field information itself can be
+        found on [List Profile Fields](#operation/list-profile-fields).
+      in: query
+      schema:
+        type: string
+      example: |
+        [{"field_id":"123456789","field_type":"text","response":"Testing"}]
+  responses:
+    "200":
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+          example:
+            {
+              "id": "12345678",
+              "first_name": "Jiminy",
+              "force_first_name": "Jiminy",
+              "last_name": "Cricket",
+              "thumb_path": "",
+              "path": "img/profiles/generic/gray.png",
+              "street_address": null,
+              "city": null,
+              "state": null,
+              "zip": null,
+              "details": { "person_id": 12345678 },
+              "family": [],
+            }
+  x-codeSamples:
+    - lang: PHP
+      source: |
+        require_once('breeze/breeze.php');
+        $breeze = new Breeze('your_api_key');
+
+        // See parameters for all available options
+        $field = new stdClass();
+        $field->field_id = "123456789";
+        $field->field_type = "text";
+        $field->response = "Testing";
+        $fields[] = $field;
+
+        $person = $breeze->url('https://yoursubdomain.breezechms.com/api/people/update?person_id=12345678&fields_json='.json_encode($fields));

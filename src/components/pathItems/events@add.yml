@@ -1,0 +1,97 @@
+get:
+  tags: [Events]
+  operationId: add-event
+  summary: Add event
+  description: Add a new event.
+  parameters:
+    - name: name
+      description: The name of the event.
+      in: query
+      schema:
+        type: string
+        example: Bonfire
+    - name: starts_on
+      description: |
+        The numeric timestamp for when the event should start ([more details on
+        this format can be found here](http://www.epochconverter.com)).
+      in: query
+      schema:
+        type: number
+        example: 1467161100
+    - name: ends_on
+      description: |
+        The numeric timestamp for when the event should end ([more details on
+        this format can be found here](http://www.epochconverter.com)).
+        Defaults to One hour after `starts_on`.
+      in: query
+      schema:
+        type: number
+        example: 1467161100
+    - name: all_day
+      description: |
+        If set, event will be all day and only the date from starts_on will be
+        used, time will be ignored.
+      in: query
+      schema:
+        type: number
+        example: 1
+        default: 0
+    - name: description
+      description: The description of the event. HTML can be used.
+      in: query
+      schema:
+        type: string
+        example: Come to this event wearing a windsuit!
+    - name: category_id
+      description: The id of the calendar this event should be placed on.
+      in: query
+      schema:
+        type: number
+        example: 14924
+        default: 0
+    - name: calendar_id
+      description: |
+        Does the same thing as the `category_id` parameter. Note that
+        `category_id` will trump `calendar_id` if both are used.
+      in: query
+      deprecated: true
+      schema:
+        type: number
+        example: 14924
+        default: 0
+    - name: event_id
+      description: |
+        The id of an existing event for this event to be in the same series
+        with. Defaults to new series.
+      in: query
+      schema:
+        type: number
+        example: 1251
+  responses:
+    "200":
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+          example:
+            [
+              {
+                "id": "8324092",
+                "oid": "1234",
+                "event_id": "4567",
+                "name": "Bonfire",
+                "category_id": "0",
+                "start_datetime": "2016-06-28 19:45:00",
+                "end_datetime": "2016-06-23 20:45:00",
+                "created_on": "2016-06-23 15:40:06",
+              },
+            ]
+  x-codeSamples:
+    - lang: PHP
+      source: |
+        require_once('breeze/breeze.php');
+        $breeze = new Breeze('your_api_key');
+        $tags = $breeze->url('https://yoursubdomain.breezechms.com/api/events/add?name=Bonfire&starts_on=1467161100');

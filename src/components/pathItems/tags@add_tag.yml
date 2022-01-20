@@ -1,0 +1,44 @@
+get:
+  tags: [Tags]
+  operationId: add-tag
+  summary: Add tag
+  description: Add a new tag.
+  parameters:
+    - name: name
+      description: The name of the tag.
+      in: query
+      schema:
+        type: string
+        example: Students
+    - name: folder_id
+      description: |
+        The specific folder to place the tag can be specified. If omitted, the
+        tag will be placed in the top level folder.
+      in: query
+      schema:
+        type: number
+        example: 12345
+  responses:
+    "200":
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+          example:
+            [
+              {
+                "id": "523928",
+                "name": "Students",
+                "created_on": "2017-09-10 09:19:40",
+                "folder_id": "4912",
+              },
+            ]
+  x-codeSamples:
+    - lang: PHP
+      source: |
+        require_once('breeze/breeze.php');
+        $breeze = new Breeze('your_api_key');
+        $tags = $breeze->url('https://yoursubdomain.breezechms.com/api/tags/add_tag?name=Students');

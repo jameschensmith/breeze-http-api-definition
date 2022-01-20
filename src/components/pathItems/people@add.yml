@@ -1,0 +1,53 @@
+get:
+  tags: [People]
+  operationId: add-person
+  summary: Add person
+  description: Add a person to your database.
+  parameters:
+    - name: first
+      description: The first name of the person.
+      in: query
+      schema:
+        type: string
+        example: Jack
+    - name: last
+      description: The last name of the person.
+      in: query
+      schema:
+        type: string
+        example: Anderson
+    - name: fields_json
+      description: |
+        Additional fields to update. See [Update
+        Person](#operation/update-person) for eligible values.
+      in: query
+      schema:
+        type: string
+  responses:
+    "200":
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+          example:
+            {
+              "id": "12345678",
+              "first_name": "Jiminy",
+              "force_first_name": "Jiminy",
+              "last_name": "Cricket",
+              "thumb_path": "",
+              "path": "img/profiles/generic/gray.png",
+              "street_address": null,
+              "city": null,
+              "state": null,
+              "zip": null,
+              "details": { "person_id": 12345678 },
+              "family": [],
+            }
+  x-codeSamples:
+    - lang: PHP
+      source: |
+        require_once('breeze/breeze.php');
+        $breeze = new Breeze('your_api_key');
+        $person = $breeze->url('https://yoursubdomain.breezechms.com/api/people/add?first=Jiminy&last=Cricket');

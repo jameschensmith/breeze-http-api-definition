@@ -1,0 +1,81 @@
+get:
+  tags: [Forms]
+  operationId: list-form-entries
+  summary: List form entries
+  description: List the entries for a given form.
+  parameters:
+    - name: form_id
+      description: |
+        The entries will be returned that correspond to the numeric form id
+        provided. See [List Forms](#operation/list-forms) for retrieving form
+        IDs.
+      in: query
+      schema:
+        type: number
+        example: 115234
+    - name: details
+      description: |
+        If set to 1, the entry responses will be returned as well. The entry
+        response array has key values that correspond to the [form
+        fields](#operation/list-form-fields).
+      in: query
+      schema:
+        type: number
+        example: 1
+        default: 0
+  responses:
+    "200":
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+          example:
+            [
+              {
+                "id": "11",
+                "form_id": "15326",
+                "created_on": "2020-03-09 13:04:02",
+                "person_id": null,
+                "response":
+                  {
+                    "45":
+                      {
+                        "id": "13",
+                        "oid": "1512",
+                        "first_name": "Zoe",
+                        "last_name": "Washburne",
+                        "created_on": "2020-03-09 13:04:03",
+                      },
+                    "46": "zwashburne@test.com",
+                    "47": "Red",
+                  },
+              },
+              {
+                "id": "10",
+                "form_id": "15326",
+                "created_on": "2020-03-09 13:03:24",
+                "person_id": null,
+                "response":
+                  {
+                    "45":
+                      {
+                        "id": "12",
+                        "oid": "1512",
+                        "first_name": "Malcolm",
+                        "last_name": "Reynolds",
+                        "created_on": "2020-03-09 13:03:24",
+                      },
+                    "46": "mreynolds@test.com",
+                    "47": "Green",
+                  },
+              },
+            ]
+  x-codeSamples:
+    - lang: PHP
+      source: |
+        require_once('breeze/breeze.php');
+        $breeze = new Breeze('your_api_key');
+        $forms = $breeze->url('https://yoursubdomain.breezechms.com/api/forms/list_form_entries?form_id=15326&details=1');

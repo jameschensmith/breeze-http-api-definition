@@ -1,0 +1,32 @@
+get:
+  tags: [Tags]
+  operationId: assign-tag
+  summary: Assign tag
+  description: Assign a tag to a person.
+  parameters:
+    - name: person_id
+      description: The id of the person to which tag should be assigned to.
+      in: query
+      schema:
+        type: number
+        example: 12498124
+    - name: tag_id
+      description: The id of the tag that should be assigned.
+      in: query
+      schema:
+        type: number
+        example: 523523
+  responses:
+    "200":
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: boolean
+          example: true
+  x-codeSamples:
+    - lang: PHP
+      source: |
+        require_once('breeze/breeze.php');
+        $breeze = new Breeze('your_api_key');
+        $tags = $breeze->url('https://yoursubdomain.breezechms.com/api/tags/assign?person_id=12345&tag_id=45678');

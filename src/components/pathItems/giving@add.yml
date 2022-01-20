@@ -1,0 +1,135 @@
+get:
+  tags: [Contributions]
+  operationId: add-contribution
+  summary: Add contribution
+  description: Add a contribution to Breeze.
+  parameters:
+    - name: date
+      description: DD-MM-YYYY
+      in: query
+      schema:
+        type: string
+        example: 24-05-2021
+    - name: person_id
+      description: |
+        The Breeze ID of the donor. If unknown, use person_json or UID instead
+        of person id.
+      in: query
+      schema:
+        type: number
+        example: 1234567
+    - name: person_json
+      description: |
+        A json object containing person's information. Breeze uses this data to
+        match the donation with the donor's Breeze profile (if no person_id
+        present). If name and email or name and street_address match, the
+        association will be automatically assigned.
+
+        The additional information (city, state, gender, phones, etc) allows
+        the API to create a profile with more complete information if no match
+        is found. (Note: The API does not yet create this profile; this is for
+        a future update - we plan on letting churches decide if new profiles
+        should be created for unmatched donations)
+      in: query
+      schema:
+        type: string
+        example: |
+          {
+            "name": "Captain Crunch",
+            "email": "ccrunch@test.com",
+            "street_address": "123 Test St",
+            "city": "Grand Rapids",
+            "state": "MI",
+            "postal": "49506",
+            "gender": "male",
+            "home_phone": "555-555-5555",
+            "mobile_phone": "555-555-5555",
+            "work_phone": "555-555-5555",
+            "birthdate": "1995-10-25"
+          }
+    - name: uid
+      description: |
+        The unique id of the person sent from the giving platform. This should
+        be used when the Breeze ID is unknown. Within Breeze a user will be
+        able to associate this ID with a given Breeze ID. In the future this
+        UID will then be automatically matched to the correct profile.
+      in: query
+      schema:
+        type: number
+        example: 9876543
+    - name: processor
+      description: |
+        The name of the processor used to send the payment. Used in conjunction
+        with UID. Not needed if using Breeze ID.
+      in: query
+      schema:
+        type: string
+        example: SimpleGive
+    - name: method
+      description: The method name.
+      in: query
+      schema:
+        type: string
+        example: Check
+    - name: funds_json
+      description: |
+        JSON string containing fund names and amounts. This allows split fund
+        giving. The ID is optional. If present, it must match an existing fund
+        ID and it will override the fund name.
+      in: query
+      schema:
+        type: string
+        example: |
+          [{"id":"12345","name":"General Fund","amount":"100.00"},{"name":"Missions Fund","amount":"150.00"}]
+    - name: amount
+      description: Total amount given. Must match sum of amount in Funds JSON.
+      in: query
+      schema:
+        type: string
+        example: "250.00"
+    - name: group
+      description: |
+        This will create a new batch and enter all contributions with the same
+        group into the new batch. Previous groups will be remembered and so
+        they should be unique for every new batch. Use this if wanting to
+        import into the next batch number in a series.
+      in: query
+      schema:
+        type: string
+        example: g239kvpx925d
+    - name: batch_number
+      description: |
+        batch_numberThe batch number to import contributions into. Use group
+        instead if you want to import into the next batch number.
+      in: query
+      schema:
+        type: number
+        example: 100
+    - name: batch_name
+      description: |
+        The name of the batch. Can be used with batch number or group.
+      in: query
+      schema:
+        type: string
+        example: Sunday Giving
+    - name: note
+      description: |
+        An optional note. Can be used for adding a note about the contribution.
+      in: query
+      schema:
+        type: string
+        example: "Missionary Fund: Mary Jones"
+  responses:
+    "200":
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+          example: { "success": true, "errors": null, "payment_id": 1320278 }
+  x-codeSamples:
+    - lang: PHP
+      source: |
+        require_once('breeze/breeze.php');
+        $breeze = new Breeze('your_api_key');
+        $response = $breeze->url('https://yoursubdomain.breezechms.com/api/giving/add?date=31-5-2020&person_id=&person_json={"name":"John Doe","email":"john_doe@example.com","street_address":"42 Wallaby Way"}&uid=29348292423&processor=Penguin Payments&method=Check&funds_json=[{"name":"General Fund","amount":"100.00"}]&amount=100.00&group=&batch_number=100&batch_name=API Test&note=Confirmation: 10023142');

@@ -1,0 +1,34 @@
+get:
+  tags: [Events]
+  operationId: list-locations
+  summary: List locations
+  description: |
+    <div style="font-style: italic; color: #aaa;">
+      <i class="icon-time"></i> Note that responses from this endpoint are
+      cached and may lag up to 15 minutes behind the live site.
+    </div>
+
+    Retrieve a list of locations.
+  responses:
+    "200":
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+          example:
+            [
+              { "id": "190", "name": "Adult Ministries Room" },
+              { "id": "188", "name": "Auditorium" },
+              { "id": "189", "name": "Gathering Space" },
+              { "id": "850", "name": "Room 301" },
+              { "id": "187", "name": "Student Room" },
+            ]
+  x-codeSamples:
+    - lang: PHP
+      source: |
+        require_once('breeze/breeze.php');
+        $breeze = new Breeze('your_api_key');
+        $locations = $breeze->url('https://yoursubdomain.breezechms.com/api/events/locations');

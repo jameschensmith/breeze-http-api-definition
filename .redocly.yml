@@ -1,0 +1,28 @@
+# Documentation: https://redoc.ly/docs/cli/configuration
+
+apiDefinitions:
+  default: ./src/openapi.yml
+
+lint:
+  extends:
+    - recommended
+
+  rules:
+    info-license: off
+    tag-description: off
+    operation-4xx-response: off
+
+referenceDocs:
+  htmlTemplate: ./web/index.html
+  theme:
+    logo:
+      gutter: 1.5rem
+    colors:
+      primary:
+        main: "#006fba"
+      text:
+        primary: "#000000"
+    rightPanel:
+      backgroundColor: "#006fba"
+    codeBlock:
+      backgroundColor: "#2d3e4c"

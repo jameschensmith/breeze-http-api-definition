@@ -1,0 +1,69 @@
+get:
+  tags: [Forms]
+  operationId: list-form-fields
+  summary: List form fields
+  description: List the fields for a given form.
+  parameters:
+    - name: form_id
+      description: |
+        The fields will be returned that correspond to the numeric form id
+        provided. See [List Forms](#operation/list-forms) for retrieving form
+        IDs.
+      in: query
+      schema:
+        type: number
+        example: 115234
+  responses:
+    "200":
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+          example:
+            [
+              {
+                "id": "185",
+                "oid": "1512",
+                "field_id": "45",
+                "profile_section_id": "0",
+                "field_type": "name",
+                "name": "Name",
+                "position": "3",
+                "profile_id": "5877b98301fc2",
+                "created_on": "2020-01-12 09:14:43",
+                "options": [],
+              },
+              {
+                "id": "186",
+                "oid": "1512",
+                "field_id": "46",
+                "profile_section_id": "0",
+                "field_type": "single_line",
+                "name": "Email",
+                "position": "4",
+                "profile_id": "5877b98301fc2",
+                "created_on": "2020-01-12 09:14:43",
+                "options": [],
+              },
+              {
+                "id": "187",
+                "oid": "1512",
+                "field_id": "47",
+                "profile_section_id": "0",
+                "field_type": "single_line",
+                "name": "Favorite Color",
+                "position": "5",
+                "profile_id": "5877b98301fc2",
+                "created_on": "2020-01-12 09:14:43",
+                "options": [],
+              },
+            ]
+  x-codeSamples:
+    - lang: PHP
+      source: |
+        require_once('breeze/breeze.php');
+        $breeze = new Breeze('your_api_key');
+        $forms = $breeze->url('https://yoursubdomain.breezechms.com/api/forms/list_form_fields?form_id=15326');

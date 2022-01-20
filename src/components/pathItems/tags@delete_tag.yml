@@ -1,0 +1,19 @@
+get:
+  tags: [Tags]
+  operationId: delete-tag
+  summary: Delete tag
+  description: Delete a tag.
+  responses:
+    "200":
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: boolean
+          example: true
+  x-codeSamples:
+    - lang: PHP
+      source: |
+        require_once('breeze/breeze.php');
+        $breeze = new Breeze('your_api_key');
+        $tags = $breeze->url('https://yoursubdomain.breezechms.com/api/tags/delete_tag?tag_id=41231');

@@ -1,0 +1,35 @@
+get:
+  tags: [Volunteers]
+  operationId: remove-volunteer-role
+  summary: Remove volunteer role
+  description: Remove a role from an event.
+  parameters:
+    - name: instance_id
+      description: |
+        The id of the event instance you want to remove the role from. Note
+        that if the event is part of a series, the role will be removed on all
+        events within the series.
+      in: query
+      schema:
+        type: number
+        example: 123456
+    - name: role_id
+      description: The id of the role to be removed.
+      in: query
+      schema:
+        type: number
+        example: 567
+  responses:
+    "200":
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: boolean
+          example: true
+  x-codeSamples:
+    - lang: PHP
+      source: |
+        require_once('breeze/breeze.php');
+        $breeze = new Breeze('your_api_key');
+        $response = $breeze->url('https://yoursubdomain.breezechms.com/api/volunteers/remove_role?instance_id=123456&role_id=567');

@@ -1,0 +1,22 @@
+{
+  "private": true,
+  "name": "breeze-http-api-definition",
+  "scripts": {
+    "build": "openapi bundle -o dist/openapi.yml",
+    "clean": "rimraf dist .redoc.json",
+    "format": "prettier . --ignore-path .gitignore --write",
+    "lint": "openapi lint",
+    "start": "npm run docs:preview",
+    "test": "npm run lint",
+    "predocs": "node hack/preDocs.js",
+    "docs": "redoc-cli bundle src/openapi.yml -o dist/index.html --options .redoc.json",
+    "docs:preview": "openapi preview-docs"
+  },
+  "devDependencies": {
+    "@redocly/openapi-cli": "^1.0.0-beta.79",
+    "js-yaml": "^4.1.0",
+    "prettier": "^2.5.1",
+    "redoc-cli": "^0.13.2",
+    "rimraf": "^3.0.2"
+  }
+}

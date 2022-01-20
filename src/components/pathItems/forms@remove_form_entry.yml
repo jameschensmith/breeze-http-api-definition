@@ -1,0 +1,26 @@
+get:
+  tags: [Forms]
+  operationId: remove-form-entry
+  summary: Remove form entry
+  description: Remove an entry from a form.
+  parameters:
+    - name: entry_id
+      description: The id of the form entry you want to remove.
+      in: query
+      schema:
+        type: number
+        example: 115234
+  responses:
+    "200":
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: boolean
+          example: true
+  x-codeSamples:
+    - lang: PHP
+      source: |
+        require_once('breeze/breeze.php');
+        $breeze = new Breeze('your_api_key');
+        $forms = $breeze->url('https://yoursubdomain.breezechms.com/api/forms/remove_form_entry?entry_id=15326');

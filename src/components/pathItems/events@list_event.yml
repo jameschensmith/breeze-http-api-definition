@@ -1,0 +1,92 @@
+get:
+  tags: [Events]
+  operationId: list-event
+  summary: List event
+  description: |
+    <div style="font-style: italic; color: #aaa;">
+      <i class="icon-time"></i> Note that responses from this endpoint are
+      cached and may lag up to 15 minutes behind the live site.
+    </div>
+
+    Retrieve an event.
+  parameters:
+    - name: instance_id
+      description: The id of the event instance that should be returned.
+      in: query
+      schema:
+        type: number
+        example: 29034243
+    - name: schedule
+      description: |
+        If other instances in the same series should be included. Note that
+        if set to true, response will be an array of events, each element
+        only containing the id and starting timestamp.
+      in: query
+      schema:
+        type: boolean
+        example: true
+    - name: schedule_direction
+      description: |
+        If including the schedule, should it include events before the
+        instance_id or after the instance_id.
+      in: query
+      schema:
+        type: string
+        example: after
+        default: before
+    - name: schedule_limit
+      description: |
+        If including the schedule, how many events in the series should be
+        returned.
+      in: query
+      schema:
+        type: number
+        example: 5
+        default: 10
+        minimum: 0
+        maximum: 100
+    - name: eligible
+      description: |
+        If set to 1, details about who is eligible to be checked in
+        ("everyone", "tags", "forms", or "none") are returned (including tags
+        associated with the event).
+      in: query
+      schema:
+        type: number
+        example: 1
+        default: 0
+    - name: details
+      description: |
+        If set to 1, additional event details will be returned (e.g.
+        description, check in settings, etc).
+      in: query
+      schema:
+        type: number
+        example: 1
+        default: 0
+  responses:
+    "200":
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+          example:
+            {
+              "id": "1234567",
+              "oid": "1234",
+              "event_id": "9876",
+              "name": "Youth Group",
+              "category_id": "0",
+              "settings_id": "0",
+              "start_datetime": "2016-06-25 18:00:00",
+              "end_datetime": "2016-06-25 20:00:00",
+              "is_modified": "0",
+              "created_on": "2016-06-23 13:06:16",
+            }
+  x-codeSamples:
+    - lang: PHP
+      source: |
+        require_once('breeze/breeze.php');
+        $breeze = new Breeze('your_api_key');
+        $events = $breeze->url('https://yoursubdomain.breezechms.com/api/events/list_event?instance_id=123456');

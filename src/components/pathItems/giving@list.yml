@@ -1,0 +1,189 @@
+get:
+  tags: [Contributions]
+  operationId: list-contributions
+  summary: List contributions
+  description: |
+    Retrieve a list of contributions based on search criteria.
+
+    To list contributions given to a specific campaign, use the `campaign_ids`
+    parameter.
+  parameters:
+    - name: start
+      description: Contributions on or after (DD-MM-YYYY).
+      in: query
+      schema:
+        type: string
+        example: 20-01-2015
+    - name: end
+      description: Contributions on or before (DD-MM-YYYY).
+      in: query
+      schema:
+        type: string
+        example: 31-01-2018
+    - name: person_id
+      description: ID of person's contributions to fetch.
+      in: query
+      schema:
+        type: number
+        example: 9023482
+    - name: include_family
+      description: |
+        Include family members of person_id (must have person_id populated to
+        take effect).
+      in: query
+      schema:
+        type: number
+        example: 1
+        default: 0
+    - name: amount_min
+      description: Amount is equal or greater than.
+      in: query
+      schema:
+        type: string
+        example: "5.00"
+    - name: amount_max
+      description: Amount is equal or less than.
+      in: query
+      schema:
+        type: string
+        example: "40.00"
+    - name: method_ids
+      description: Method IDs. Multiple ids separated by a dash (-).
+      in: query
+      schema:
+        type: string
+        example: "234-236-237"
+    - name: fund_ids
+      description: Fund IDs. Multiple ids separated by a dash (-).
+      in: query
+      schema:
+        type: string
+        example: "9234-9235-9238"
+    - name: envelope_number
+      description: Envelope number.
+      in: query
+      schema:
+        type: number
+        example: 101
+    - name: batches
+      description: Batch numbers. Multiple numbers separated by a dash (-).
+      in: query
+      schema:
+        type: string
+        example: "101-102-103"
+    - name: forms
+      description: Form IDs. Multiple ids separated by a dash (-).
+      in: query
+      schema:
+        type: string
+        example: "7890-7891"
+    - name: pledge_ids
+      description: |
+        Pledge Campaign IDs. IDs accessible from list pledges query. Multiple
+        ids separated by a dash (-).
+      in: query
+      schema:
+        type: string
+        example: "7890-7891"
+  responses:
+    "200":
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+          example:
+            [
+              {
+                "id": "378477",
+                "paid_on": "2020-03-05 00:00:00",
+                "num": "144",
+                "created_on": "2015-06-05 21:37:50",
+                "method": "check",
+                "method_id": "41",
+                "amount": "32.00",
+                "note": "",
+                "person_id": "157823",
+                "first_name": "Frodo",
+                "last_name": "Baggins",
+                "envelope_number": "105",
+                "meta": null,
+                "funds":
+                  [
+                    {
+                      "id": "19399",
+                      "oid": "2749",
+                      "payment_id": "378477",
+                      "fund_id": "28",
+                      "amount": "32.00",
+                      "created_on": "2020-02-25 08:04:36",
+                      "fund_name": "General Fund",
+                      "tax_deductible": "1",
+                    },
+                  ],
+              },
+              {
+                "id": "376786",
+                "paid_on": "2020-05-06 00:00:00",
+                "num": "143",
+                "created_on": "2015-06-05 21:37:54",
+                "method": "check",
+                "method_id": "41",
+                "amount": "75.00",
+                "note": "",
+                "person_id": "157828",
+                "first_name": "Andy",
+                "last_name": "Bernard",
+                "envelope_number": "106",
+                "meta": null,
+                "funds":
+                  [
+                    {
+                      "id": "17708",
+                      "oid": "2749",
+                      "payment_id": "376786",
+                      "fund_id": "28",
+                      "amount": "75.00",
+                      "created_on": "2020-02-24 06:25:38",
+                      "fund_name": "General Fund",
+                      "tax_deductible": "1",
+                    },
+                  ],
+              },
+              {
+                "id": "376785",
+                "paid_on": "2020-03-07 00:00:00",
+                "num": "143",
+                "created_on": "2015-06-05 21:37:54",
+                "method": "check",
+                "method_id": "41",
+                "amount": "78.00",
+                "note": "",
+                "person_id": "254576",
+                "first_name": "Mickey",
+                "last_name": "Mouse",
+                "envelope_number": null,
+                "meta": null,
+                "funds":
+                  [
+                    {
+                      "id": "17707",
+                      "oid": "2749",
+                      "payment_id": "376785",
+                      "fund_id": "28",
+                      "amount": "78.00",
+                      "created_on": "2020-02-24 06:25:20",
+                      "fund_name": "General Fund",
+                      "tax_deductible": "1",
+                    },
+                  ],
+              },
+            ]
+  x-codeSamples:
+    - lang: PHP
+      source: |
+        require_once('breeze/breeze.php');
+        $breeze = new Breeze('your_api_key');
+        $contributions = $breeze->url('https://yoursubdomain.breezechms.com/api/giving/list?start=2020-1-15&end=2020-6-15');

@@ -1,0 +1,28 @@
+get:
+  tags: [Families]
+  operationId: remove-person-from-family
+  summary: Remove person from existing family
+  description: Removes a person from an existing family.
+  parameters:
+    - name: people_ids_json
+      description: |
+        The json encoded ids of the people that should be removed from the
+        family they are currently in.
+      in: query
+      schema:
+        type: string
+      example: "[1111111,2222222,3333333]"
+  responses:
+    "200":
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+          example: { "success": true }
+  x-codeSamples:
+    - lang: PHP
+      source: |
+        require_once('breeze/breeze.php');
+        $breeze = new Breeze('your_api_key');
+        $response = $breeze->url('https://yoursubdomain.breezechms.com/api/families/remove?people_ids_json=[1111111,2222222,3333333]');

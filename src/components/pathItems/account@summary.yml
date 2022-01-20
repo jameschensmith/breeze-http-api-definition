@@ -1,0 +1,78 @@
+get:
+  tags: [Account]
+  operationId: account-summary
+  summary: Account summary
+  description: Retrieve account summary details.
+  responses:
+    "200":
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+              name:
+                type: string
+              subdomain:
+                type: string
+              status:
+                type: string
+              created_on:
+                type: string
+              details:
+                type: object
+                properties:
+                  timezone:
+                    type: string
+                  country:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      abbreviation:
+                        type: string
+                      abbreviation_2:
+                        type: string
+                      currency:
+                        type: string
+                      currency_symbol:
+                        type: string
+                      date_format:
+                        type: string
+                      sms_prefix:
+                        type: string
+          example:
+            {
+              "id": "1234",
+              "name": "Grace Church",
+              "subdomain": "gracechurchdemo",
+              "status": "1",
+              "created_on": "2020-09-10 09:19:35",
+              "details":
+                {
+                  "timezone": "America/New_York",
+                  "country":
+                    {
+                      "id": "2",
+                      "name": "United States of America",
+                      "abbreviation": "USA",
+                      "abbreviation_2": "US",
+                      "currency": "USD",
+                      "currency_symbol": "$",
+                      "date_format": "MDY",
+                      "sms_prefix": "1",
+                    },
+                },
+            }
+  x-codeSamples:
+    - lang: PHP
+      source: |
+        require_once('breeze/breeze.php');
+        $breeze = new Breeze('your_api_key');
+
+        // get all breeze ids for people updated since 2016-1-25
+        $summary = $breeze->url('https://yoursubdomain.breezechms.com/api/account/summary');

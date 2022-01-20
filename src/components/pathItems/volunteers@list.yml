@@ -1,0 +1,64 @@
+get:
+  tags: [Volunteers]
+  operationId: list-volunteers
+  summary: List volunteers
+  description: List volunteers from a specific event.
+  parameters:
+    - name: instance_id
+      description: |
+        The id of the event instance you want to list the volunteers for.
+      in: query
+      schema:
+        type: number
+        example: 123456
+  responses:
+    "200":
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+          example:
+            [
+              {
+                "id": "12345678",
+                "oid": "1234",
+                "instance_id": "123456",
+                "person_id": "3008467",
+                "response": "0",
+                "comment": "",
+                "rsvped_on": "0000-00-00 00:00:00",
+                "created_on": "2020-09-06 03:07:32",
+                "role_ids": null,
+              },
+              {
+                "id": "23051231",
+                "oid": "2749",
+                "instance_id": "123456",
+                "person_id": "3349681",
+                "response": "0",
+                "comment": "",
+                "rsvped_on": "0000-00-00 00:00:00",
+                "created_on": "2020-09-06 03:07:32",
+                "role_ids": ["9627", "9628"],
+              },
+              {
+                "id": "3248759",
+                "oid": "2749",
+                "instance_id": "123456",
+                "person_id": "3248759",
+                "response": "0",
+                "comment": "",
+                "rsvped_on": "0000-00-00 00:00:00",
+                "created_on": "2020-09-06 03:26:53",
+                "role_ids": null,
+              },
+            ]
+  x-codeSamples:
+    - lang: PHP
+      source: |
+        require_once('breeze/breeze.php');
+        $breeze = new Breeze('your_api_key');
+        $volunteers = $breeze->url('https://yoursubdomain.breezechms.com/api/volunteers/list?instance_id=123456');

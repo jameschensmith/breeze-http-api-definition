@@ -1,0 +1,20 @@
+get:
+  tags: [Check In]
+  operationId: remove-attendance-record
+  summary: Remove attendance record
+  description: >
+    Remove an attendance record for a profile from an individual event instance.
+  responses:
+    "200":
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: boolean
+          example: true
+  x-codeSamples:
+    - lang: PHP
+      source: |
+        require_once('breeze/breeze.php');
+        $breeze = new Breeze('your_api_key');
+        $remove = $breeze->url('https://yoursubdomain.breezechms.com/api/events/attendance/delete?person_id=1234567&instance_id=7654321');

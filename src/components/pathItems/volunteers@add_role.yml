@@ -1,0 +1,44 @@
+get:
+  tags: [Volunteers]
+  operationId: add-volunteer-role
+  summary: Add volunteer role
+  description: Add a role to an event.
+  parameters:
+    - name: instance_id
+      description: |
+        he id of the event instance you want to retrieve the volunteer roles
+        for. Note that if the event is part of a series, the role will become
+        available on all events within the series.
+      in: query
+      schema:
+        type: number
+        example: 123456
+    - name: name
+      description: The name of the role you'd like to add.
+      in: query
+      schema:
+        type: string
+        example: Greeter
+    - name: quantity
+      description: |
+        The quantity of volunteers needed for the role you'd like to add. Note
+        that if the event is part of a series, this will overwrite any current
+        quantity settings for any events in this series.
+      in: query
+      schema:
+        type: number
+        example: 1
+  responses:
+    "200":
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+          example: { "id": 9631, "name": "Greeter", "quantity": "2" }
+  x-codeSamples:
+    - lang: PHP
+      source: |
+        require_once('breeze/breeze.php');
+        $breeze = new Breeze('your_api_key');
+        $response = $breeze->url('https://yoursubdomain.breezechms.com/api/volunteers/add_role?instance_id=123456&name=Greeter&quantity=2');

@@ -1,0 +1,26 @@
+get:
+  tags: [Events]
+  operationId: delete-event
+  summary: Delete event
+  description: Delete an event.
+  parameters:
+    - name: instance_id
+      description: The ID of the instance that should be deleted.
+      in: query
+      schema:
+        type: number
+        example: 235324
+  responses:
+    "200":
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: boolean
+          example: true
+  x-codeSamples:
+    - lang: PHP
+      source: |
+        require_once('breeze/breeze.php');
+        $breeze = new Breeze('your_api_key');
+        $tags = $breeze->url('https://yoursubdomain.breezechms.com/api/events/delete?instance_id=12345');

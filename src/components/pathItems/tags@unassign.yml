@@ -1,0 +1,32 @@
+get:
+  tags: [Tags]
+  operationId: unassign-tag
+  summary: Unassign tag
+  description: Unassign a tag from a person.
+  parameters:
+    - name: person_id
+      description: The id of the person to which tag should be unassigned from.
+      in: query
+      schema:
+        type: number
+        example: 12498124
+    - name: tag_id
+      description: The id of the tag that should be unassigned.
+      in: query
+      schema:
+        type: number
+        example: 523523
+  responses:
+    "200":
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: boolean
+          example: true
+  x-codeSamples:
+    - lang: PHP
+      source: |
+        require_once('breeze/breeze.php');
+        $breeze = new Breeze('your_api_key');
+        $tags = $breeze->url('https://yoursubdomain.breezechms.com/api/tags/unassign?person_id=12345&tag_id=45678');

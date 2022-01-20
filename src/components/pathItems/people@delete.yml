@@ -1,0 +1,26 @@
+get:
+  tags: [People]
+  operationId: delete-person
+  summary: Delete person
+  description: Delete a person from your database.
+  parameters:
+    - name: person_id
+      description: The id of the person to delete.
+      in: query
+      schema:
+        type: string
+        example: Jack
+  responses:
+    "200":
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: boolean
+          example: true
+  x-codeSamples:
+    - lang: PHP
+      source: |
+        require_once('breeze/breeze.php');
+        $breeze = new Breeze('your_api_key');
+        $person = $breeze->url('https://yoursubdomain.breezechms.com/api/people/delete?person_id=12345678');

@@ -1,0 +1,40 @@
+get:
+  tags: [Check In]
+  operationId: add-attendance-record
+  summary: Add attendance record
+  description: >
+    Add an attendance record for a profile to an individual event instance.
+  parameters:
+    - name: direction
+      description: |
+        Set whether someone is being checked into or out of an event. Note that
+        checking "out" is not the same as "removing" the attendance record.
+        Checking out refers to recording a timestamp of when the individual
+        left the event.
+
+        If the check "out" call is made on a profile that is not already
+        checked in, a new attendance record will be created that has a checked
+        in time that matches the checked out time.
+
+        The check out command will work even if the event's settings aren't set
+        to enable check out (the setting simply controls the Breeze check in
+        user interface for the event which the API bypasses).
+      in: query
+      schema:
+        type: string
+        example: out
+        default: in
+  responses:
+    "200":
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: boolean
+          example: true
+  x-codeSamples:
+    - lang: PHP
+      source: |
+        require_once('breeze/breeze.php');
+        $breeze = new Breeze('your_api_key');
+        $add = $breeze->url('https://yoursubdomain.breezechms.com/api/events/attendance/add?person_id=1234567&instance_id=7654321');

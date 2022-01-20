@@ -1,0 +1,214 @@
+get:
+  tags: [Account]
+  operationId: list-account-log
+  summary: List account log
+  description: Retrieve a list of events based on search criteria.
+  parameters:
+    - name: action
+      description: |
+        A required parameter indicating which type of logged action should be
+        returned.
+
+        **Example**
+
+        **Communications**
+        - email_sent
+        - text_sent
+
+        **Contributions**
+        - contribution_added
+        - contribution_updated
+        - contribution_deleted
+        - bulk_contributions_deleted
+        - envelope_created
+        - envelope_updated
+        - envelope_deleted
+        - payment_method_updated
+        - payment_method_deleted
+        - payment_method_created
+        - bank_account_added
+        - bank_account_updated
+        - transfer_day_changed
+        - bank_account_deleted
+        - payment_association_deleted
+        - payment_association_created
+        - bulk_import_contributions
+        - bulk_import_pledges
+        - bulk_pledges_deleted
+        - batch_updated
+        - batch_deleted
+        - bulk_envelopes_deleted
+
+        **Events**
+        - event_created
+        - event_updated
+        - event_deleted
+        - event_instance_deleted
+        - event_future_deleted
+        - events_calendar_created
+        - events_calendar_updated
+        - events_calendar_deleted
+        - bulk_import_attendance
+        - attendance_deleted
+        - bulk_attendance_deleted
+
+        **Volunteers**
+        - volunteer_role_created
+        - volunteer_role_deleted
+
+        **People**
+        - person_created
+        - person_updated
+        - person_deleted
+        - person_archived
+        - person_merged
+        - people_updated
+        - bulk_update_people
+        - bulk_people_deleted
+        - bulk_people_archived
+        - bulk_import_people
+        - bulk_notes_deleted
+
+        **Tags**
+        - tag_created
+        - tag_updated
+        - tag_deleted
+        - bulk_tags_deleted
+        - tag_folder_created
+        - tag_folder_updated
+        - tag_folder_deleted
+        - tag_assign
+        - tag_unassign
+
+        **Forms**
+        - form_created
+        - form_updated
+        - form_deleted
+        - form_entry_updated
+        - form_entry_deleted
+
+        **Follow Ups**
+        - followup_option_created
+        - followup_option_updated
+        - followup_option_deleted
+
+        **Users**
+        - user_created
+        - user_updated
+        - user_deleted
+        - role_created
+        - role_updated
+        - role_deleted
+
+        **Extensions**
+        - extension_installed
+        - extension_uninstalled
+        - extension_upgraded
+        - extension_downgraded
+
+        **Account**
+        - sub_payment_method_updated
+      in: query
+      schema:
+        type: string
+    - name: start
+      description: |
+        The start date range for actions that should be returned. If not
+        provided, logged items will be fetched from as long ago as the log is
+        storing.
+      in: query
+      schema:
+        type: string
+        example: "2016-10-25"
+    - name: end
+      description: |
+        The end date range for actions that should be returned. If not
+        provided, logged items will be fetched up until the current moment.
+      in: query
+      schema:
+        type: string
+        example: "2017-04-25"
+    - name: user_id
+      description: |
+        The user_id of the user who made the logged action. If not provided,
+        all users' actions will be returned.
+      in: query
+      schema:
+        type: number
+        example: 145
+    - name: details
+      description: |
+        If details about the logged action should be returned. Note that this
+        column is not guaranteed to be standardized and should not be relied
+        upon for anything more than a description.
+      in: query
+      schema:
+        type: number
+        example: 1
+        default: 0
+    - name: limit
+      description: The number of logged items to return.
+      in: query
+      schema:
+        type: number
+        example: 50
+        default: 500
+        minimum: 0
+        maximum: 3000
+  responses:
+    "200":
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: string
+                oid:
+                  type: string
+                user_id:
+                  type: string
+                action:
+                  type: string
+                object_json:
+                  type: string
+                created_on:
+                  type: string
+          example:
+            [
+              {
+                "id": "112",
+                "oid": "123",
+                "user_id": "261",
+                "action": "person_updated",
+                "object_json": '"5023943"',
+                "created_on": "2020-08-15 04:41:10",
+              },
+              {
+                "id": "113",
+                "oid": "123",
+                "user_id": "261",
+                "action": "person_updated",
+                "object_json": '"5023253"',
+                "created_on": "2020-08-15 04:44:25",
+              },
+              {
+                "id": "114",
+                "oid": "123",
+                "user_id": "261",
+                "action": "person_updated",
+                "object_json": '"5023129"',
+                "created_on": "2020-08-15 04:49:31",
+              },
+            ]
+  x-codeSamples:
+    - lang: PHP
+      source: |
+        require_once('breeze/breeze.php');
+        $breeze = new Breeze('your_api_key');
+
+        // get all breeze ids for people updated since 2016-1-25
+        $logged_actions = $breeze->url('https://yoursubdomain.breezechms.com/api/account/list_log?action=person_updated&start=2016-1-25');

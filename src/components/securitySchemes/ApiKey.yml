@@ -1,0 +1,4 @@
+type: apiKey
+in: header
+name: Api-Key
+description: Breeze API key.

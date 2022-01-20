@@ -1,0 +1,30 @@
+get:
+  tags: [Families]
+  operationId: create-family
+  summary: Create family
+  description: Creates a new family from a set of people.
+  parameters:
+    - name: people_ids_json
+      description: |
+        The json encoded ids of the people that should be connected into the
+        same family. Note that if any of these people are in alternate
+        families, this action will remove them from their previous family as a
+        person can only be part of one family at a time.
+      in: query
+      schema:
+        type: string
+      example: "[1111111,2222222,3333333]"
+  responses:
+    "200":
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+          example: { "success": true }
+  x-codeSamples:
+    - lang: PHP
+      source: |
+        require_once('breeze/breeze.php');
+        $breeze = new Breeze('your_api_key');
+        $response = $breeze->url('https://yoursubdomain.breezechms.com/api/families/create?people_ids_json=[1111111,2222222,3333333]');

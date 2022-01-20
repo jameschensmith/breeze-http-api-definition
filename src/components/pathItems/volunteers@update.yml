@@ -1,0 +1,45 @@
+get:
+  tags: [Volunteers]
+  operationId: update-volunteer
+  summary: Update volunteer
+  description: Update the volunteer role(s) for a person in a given event.
+  parameters:
+    - name: instance_id
+      description: |
+        The id of the event instance containing the person you wish to update.
+      in: query
+      schema:
+        type: number
+        example: 123456
+    - name: person_id
+      description: The id of the person you wish to update.
+      in: query
+      schema:
+        type: number
+        example: 654321
+    - name: role_ids_json
+      description: |
+        The id(s) of the role(s) you wish the person to have. Note that this
+        replaces current values, so if a volunteer currently has a role and
+        this command is run and does not pass in that same role_id, the current
+        role will be removed and replaced with the passed role(s). If excluded,
+        the volunteer will be assigned no role.
+      in: query
+      schema:
+        type: string
+      example: "[563,564]"
+  responses:
+    "200":
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: boolean
+          example: true
+  x-codeSamples:
+    - lang: PHP
+      source: |
+        require_once('breeze/breeze.php');
+        $breeze = new Breeze('your_api_key');
+        $role_ids_json = json_encode(Array(523, 524));
+        $response = $breeze->url('https://yoursubdomain.breezechms.com/api/volunteers/update?instance_id=123456&person_id=5182132&role_ids_json='.$role_ids_json);

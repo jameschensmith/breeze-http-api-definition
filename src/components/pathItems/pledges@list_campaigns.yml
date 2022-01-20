@@ -1,0 +1,45 @@
+get:
+  tags: [Pledges]
+  operationId: list-campaigns
+  summary: List campaigns
+  description: |
+    <div style="font-style: italic; color: #aaa;">
+      <i class="icon-time"></i> Note that responses from this endpoint are
+      cached and may lag up to 15 minutes behind the live site.
+    </div>
+
+    List campaigns.
+  responses:
+    "200":
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+          example:
+            [
+              {
+                "id": "12731",
+                "oid": "2749",
+                "name": "Building Campaign",
+                "created_on": "2020-08-15 04:41:10",
+                "number_of_pledges": 65,
+                "total_pledged": 13030,
+              },
+              {
+                "id": "253242",
+                "oid": "2749",
+                "name": "2021 Pledge Campaign",
+                "created_on": "2020-07-28 14:14:11",
+                "number_of_pledges": 143,
+                "total_pledged": 147532,
+              },
+            ]
+  x-codeSamples:
+    - lang: PHP
+      source: |
+        require_once('breeze/breeze.php');
+        $breeze = new Breeze('your_api_key');
+        $campaigns = $breeze->url('https://yoursubdomain.breezechms.com/api/pledges/list_campaigns');

@@ -1,0 +1,50 @@
+get:
+  tags: [Tags]
+  operationId: list-tags
+  summary: List tags
+  description: List tags from your database.
+  parameters:
+    - name: folder_id
+      description: |
+        Numeric ID of a folder. If provided, only tags within that folder will
+        be returned.
+      in: query
+      schema:
+        type: number
+        example: 123456
+  responses:
+    "200":
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+          example:
+            [
+              {
+                "id": "523928",
+                "name": "4th & 5th",
+                "created_on": "2020-09-10 09:19:40",
+                "folder_id": "1539",
+              },
+              {
+                "id": "51994",
+                "name": "6th Grade",
+                "created_on": "2020-02-06 06:40:40",
+                "folder_id": "1539",
+              },
+              {
+                "id": "332546",
+                "name": "Andrews Group",
+                "created_on": "2020-09-10 09:19:40",
+                "folder_id": "1538",
+              },
+            ]
+  x-codeSamples:
+    - lang: PHP
+      source: |
+        require_once('breeze/breeze.php');
+        $breeze = new Breeze('your_api_key');
+        $tags = $breeze->url('https://yoursubdomain.breezechms.com/api/tags/list_tags');

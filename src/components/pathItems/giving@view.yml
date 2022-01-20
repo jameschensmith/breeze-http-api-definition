@@ -1,0 +1,47 @@
+get:
+  tags: [Contributions]
+  operationId: view-contribution
+  summary: View contribution
+  description: View an existing contribution.
+  parameters:
+    - name: payment_id
+      description: The ID of the payment to view.
+      in: query
+      schema:
+        type: number
+        example: 56789123
+  responses:
+    "200":
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+          example:
+            {
+              "success": true,
+              "errors": null,
+              "payment_id": "1244773",
+              "payment":
+                {
+                  "id": "1244773",
+                  "oid": "2749",
+                  "person_id": "523533",
+                  "amount": "100.00",
+                  "batch_id": "197430",
+                  "method": "Check",
+                  "paid_on": "2020-02-05 00:00:00",
+                  "note": "Breeze Online Payment (Stripe)",
+                  "created_on": "2020-02-08 21:31:14",
+                  "batch_num": "6026",
+                  "person": [],
+                  "funds": [],
+                  "meta": [],
+                },
+            }
+  x-codeSamples:
+    - lang: PHP
+      source: |
+        require_once('breeze/breeze.php');
+        $breeze = new Breeze('your_api_key');
+        $response = $breeze->url('https://yoursubdomain.breezechms.com/api/giving/view?payment_id=56789123');

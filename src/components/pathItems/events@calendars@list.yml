@@ -1,0 +1,63 @@
+get:
+  tags: [Events]
+  operationId: list-calendars
+  summary: List calendars
+  description: |
+    <div style="font-style: italic; color: #aaa;">
+      <i class="icon-time"></i> Note that responses from this endpoint are
+      cached and may lag up to 15 minutes behind the live site.
+    </div>
+
+    Retrieve a list of calendars.
+  responses:
+    "200":
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+          example:
+            [
+              {
+                "id": 0,
+                "name": "Main",
+                "color": "b2cd92",
+                "address": "https://yoursubdomain.breezechms.com/events/feed/eXGoxSB6C234ksdfkjf02jfklsdfjklf23lkjsd,fdHT8xFNnsPyXGm3",
+                "embed_key": "AbC%3D",
+              },
+              {
+                "id": "905",
+                "oid": "2749",
+                "name": "Staff",
+                "color": "d1ba39",
+                "address": "https://yoursubdomain.breezechms.com/events/feed/kfj032fkdsfkjl23fj9fdsijfkl2fj90fjklsdkfmvndm23k",
+                "created_on": "2016-01-20 11:38:18",
+                "embed_key": "BcD%3D",
+              },
+              {
+                "id": "1291",
+                "oid": "2749",
+                "name": "Students",
+                "color": "a773b8",
+                "address": "https://yoursubdomain.breezechms.com/events/feed/vs92k3kdfsdkfJFkdfwodlkfweLFKLDF3sdfewklfjweoflkj23ifjlksdfjksdsfkljinsl35jo",
+                "created_on": "2016-03-03 08:28:34",
+                "embed_key": "CdE%3D",
+              },
+              {
+                "id": "1283",
+                "oid": "2749",
+                "name": "Google Calendar",
+                "color": "b2cd92",
+                "address": "webcal://path/to/external/calendar.ics",
+                "created_on": "2016-03-02 14:11:32",
+                "embed_key": "EFg%3D",
+              },
+            ]
+  x-codeSamples:
+    - lang: PHP
+      source: |
+        require_once('breeze/breeze.php');
+        $breeze = new Breeze('your_api_key');
+        $calendars = $breeze->url('https://yoursubdomain.breezechms.com/api/events/calendars/list');

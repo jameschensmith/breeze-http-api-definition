@@ -1,0 +1,17 @@
+# Documentation: https://git-scm.com/docs/gitignore
+
+# General rules
+.*
+
+# Dot-files to not ignore
+!.editorconfig
+!.gitignore
+!.node-version
+!.nvmrc
+!.redocly.yml
+
+# Node.js
+**/node_modules/
+
+# Output directories
+/dist/

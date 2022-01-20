@@ -1,0 +1,9 @@
+name: details
+description: >
+  Option to return all information (slower) or just names. 1 = get all
+  information pertaining to person; 0 = only get id and name.
+in: query
+schema:
+  type: number
+  example: 1
+  default: 0

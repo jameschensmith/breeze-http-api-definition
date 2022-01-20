@@ -1,0 +1,33 @@
+get:
+  tags: [Volunteers]
+  operationId: add-volunteer
+  summary: Add volunteer
+  description: Schedule a volunteer for a specific event.
+  parameters:
+    - name: instance_id
+      description: |
+        The id of the event instance you want to schedule the volunteer for.
+      in: query
+      schema:
+        type: number
+        example: 123456
+    - name: person_id
+      description: The id of the person you wish to schedule.
+      in: query
+      schema:
+        type: number
+        example: 654321
+  responses:
+    "200":
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: boolean
+          example: true
+  x-codeSamples:
+    - lang: PHP
+      source: |
+        require_once('breeze/breeze.php');
+        $breeze = new Breeze('your_api_key');
+        $response = $breeze->url('https://yoursubdomain.breezechms.com/api/volunteers/add?instance_id=123456&person_id=654321');

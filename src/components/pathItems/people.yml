@@ -1,0 +1,71 @@
+get:
+  tags: [People]
+  operationId: list-people
+  summary: List people
+  description: List people from your database.
+  parameters:
+    - $ref: "../parameters/details.yml"
+    - name: filter_json
+      description: >
+        Option to filter through results based on criteria (tags, status, etc).
+        Refer to profile field response to know values to search for or if
+        you're hard-coding the field ids, watch the URL bar when filtering for
+        people within Breeze's people filter page and use the variables you see
+        listed.
+      in: query
+      schema:
+        type: string
+        example: '{"2000138015":"226-227","835255370":"Male"}'
+        default: ""
+    - name: limit
+      description: >
+        Number of people to return. If 0 or not present, will return all people.
+      in: query
+      schema:
+        type: number
+        example: 50
+        default: 0
+    - name: offset
+      description: >
+        Number of people to skip before beginning to return results. Can be
+        used in conjunction with limit for pagination.
+      in: query
+      schema:
+        type: number
+        example: 51
+        default: 0
+  responses:
+    "200":
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+          example:
+            [
+              {
+                "id": "157857",
+                "first_name": "Thomas",
+                "last_name": "Anderson",
+                "path": "img/profiles/generic/blue.jpg",
+              },
+              {
+                "id": "157859",
+                "first_name": "Kate",
+                "last_name": "Austen",
+                "path": "img/profiles/upload/2498d7f78s.jpg",
+              },
+            ]
+  x-codeSamples:
+    - lang: PHP
+      source: |
+        require_once('breeze/breeze.php');
+        $breeze = new Breeze('your_api_key');
+        $people = $breeze->url('https://yoursubdomain.breezechms.com/api/people/');
+
+        // To view people within a certain tag or tags, use the `filter_json` parameter.
+        $filter['tag_contains'] = 'y_16681';
+        $filter_json = json_encode($filter);
+        $filtered_people = $breeze->url("https://yoursubdomain.breezechms.com/api/people/?filter_json=$filter_json");

@@ -1,0 +1,260 @@
+openapi: 3.1.0
+info:
+  title: Breeze HTTP API
+  description: |
+    # Overview
+
+    The following API documentation was developed as a personal project to
+    showcase the power of rendering an OpenAPI document. It is intended to be
+    used only as an example.
+
+    # Getting Started
+
+    The Breeze API allows you to build custom applications integrated with the
+    Breeze database. If you have a specific need and programming talent, you
+    can build the solution you're looking for using the data you already have
+    in Breeze.
+
+    You can use any programming language you'd like. If you'd like to use an
+    API wrapper, you'll find some below (disclaimer: API wrappers are not
+    necessarily created or maintained by Breeze).
+
+    * [Download PHP API Wrapper](https://github.com/BreezeChMS/breeze-api-wrapper-php)
+    * [Download Python API Wrapper](https://github.com/aortiz32/pyBreezeChMS)
+    * [Download Node.js API Wrapper](https://github.com/notebird-app/breeze-chms)
+
+    # Examples
+
+    ## Display Person
+
+    This example shows how to fetch all profile fields and then, for a given
+    person, iterate through each profile field, outputting the data for that
+    field for that person.
+
+    ```php
+    require_once('breeze/breeze.php');
+    $breeze = new Breeze('your_api_key');
+
+    // get person information
+    $person_id = 3959584;
+    $person = $breeze->url('https://yoursubdomain.breezechms.com/api/people/'.$person_id);
+    $person = json_decode($person);
+    $person_details = $person->details;
+
+    // get all profile fields
+    $field_sections = $breeze->url('https://yoursubdomain.breezechms.com/api/profile');
+    $field_sections = json_decode($field_sections);
+
+    // output person's name
+    echo "<h1>" . $person->first_name . " " . $person->last_name . "</h1><hr />";
+
+    // for each profile field section
+    foreach($field_sections as $field_section) {
+        // include the section name
+        echo "<h2>" . $field_section->name . "</h2>";
+
+        // for each field in that section
+        foreach($field_section->fields as $field) {
+            // output the field name and ID
+            echo "<h4>" . $field->name . " (".$field->field_id.")</h4>";
+
+            // and output the person's details for that field
+            var_dump($person_details->{$field->field_id});
+        }
+    }
+    ```
+
+    ## Payment Integration
+
+    This example shows a typical integration a third party payment processor
+    might use to store processed payments within Breeze.
+
+    ```php
+    require_once('breeze/breeze.php');
+    $breeze = new Breeze('your_api_key ');
+
+    $date = "2021-1-25"; // date gift was given
+
+    $processor = "Acme Corp"; // name of 3rd party giving platform
+
+    $method = "Check"; // method name; can be any string as if it does not already exist, it will be auto-created
+
+    $amount = 100; // full contribution amount
+
+    $funds = Array(); // list of funds that the gift is given to (can accept more than one for split fund gifts)
+
+    // designate $70 to General Fund
+    $fund = new stdClass();
+    $fund->name = "General Fund";
+    $fund->amount = 70;
+    $funds[] = $fund;
+
+    // designate $30 to Missions Fund
+    $fund = new stdClass();
+    $fund->name = "Missions Fund";
+    $fund->amount = 30;
+    $funds[] = $fund;
+
+    $funds_json = json_encode($funds); // store as json to pass in URL
+
+    $group = date('YW'); // all contributions with the same group will be put into the same batch - by creating a group out of the date('YW'), we effectively create a new batch for each week
+
+    $batch_name = $processor . " Giving";
+
+    // Pass along person's information.  If person is not already matched in Breeze, this will help the Breeze user either create or match the gift with the correct profile
+    $person = new stdClass();
+    $person->name = "John Doe";
+    $person->email = "john.doe@example.com";
+    $person_json = json_encode($person); // store as json to pass in URL
+
+    // A unique ID for the person as defined by the giving platform, not Breeze (i.e. this can be whatever you'd like).  After the Breeze user initially matches this gift, all future gifts with this same unique ID will automatically connect to the correct profile
+    $uid = "123f3d5g62";
+
+    // store payment
+    $response = $breeze->url('https://yoursubdomain.breezechms.com/api/giving/add?date=' . $date . '&person_json=' . $person_json . '&uid=' . $uid . '&processor=' . $processor . '&method=' . $method . '&funds_json=' . $funds_json . '&amount=' . $amount . '&group=' . $group . '&batch_name=' . $batch_name);
+    ```
+  version: 0.1.0
+  contact:
+    name: Breeze
+    email: hello@example.com
+    url: https://breezechms.com
+  termsOfService: https://www.breezechms.com/terms-of-service
+  x-logo:
+    url: https://www.breezechms.com/hubfs/breeze-logo-blue.png
+externalDocs:
+  url: https://support.breezechms.com
+  description: Support Documentation
+servers:
+  - url: https://{subdomain}.breezechms.com/api
+    description: |
+      Replace `subdomain` with your church's subdomain.
+    variables:
+      subdomain:
+        default: yoursubdomain
+        description: Your church's subdomain.
+security:
+  - ApiKey: []
+tags:
+  - name: People
+  - name: Tags
+  - name: Events
+  - name: Check In
+  - name: Contributions
+  - name: Pledges
+  - name: Forms
+  - name: Volunteers
+  - name: Families
+  - name: Account
+paths:
+  # People
+  /people:
+    $ref: "./components/pathItems/people.yml"
+  /people/{person-id}:
+    $ref: "./components/pathItems/people@{person-id}.yml"
+  /profile:
+    $ref: "./components/pathItems/profile.yml"
+  /people/add:
+    $ref: "./components/pathItems/people@add.yml"
+  /people/update:
+    $ref: "./components/pathItems/people@update.yml"
+  /people/delete:
+    $ref: "./components/pathItems/people@delete.yml"
+  # Tags
+  /tags/list_tags:
+    $ref: "./components/pathItems/tags@list_tags.yml"
+  /tags/list_folders:
+    $ref: "./components/pathItems/tags@list_folders.yml"
+  /tags/add_tag:
+    $ref: "./components/pathItems/tags@add_tag.yml"
+  /tags/add_tag_folder:
+    $ref: "./components/pathItems/tags@add_tag_folder.yml"
+  /tags/delete_tag:
+    $ref: "./components/pathItems/tags@delete_tag.yml"
+  /tags/delete_tag_folder:
+    $ref: "./components/pathItems/tags@delete_tag_folder.yml"
+  /tags/assign:
+    $ref: "./components/pathItems/tags@assign.yml"
+  /tags/unassign:
+    $ref: "./components/pathItems/tags@unassign.yml"
+  # Events
+  /events:
+    $ref: "./components/pathItems/events.yml"
+  /events/list_event:
+    $ref: "./components/pathItems/events@list_event.yml"
+  /events/calendars/list:
+    $ref: "./components/pathItems/events@calendars@list.yml"
+  /events/locations:
+    $ref: "./components/pathItems/events@locations.yml"
+  /events/add:
+    $ref: "./components/pathItems/events@add.yml"
+  /events/delete:
+    $ref: "./components/pathItems/events@delete.yml"
+  # Check In
+  /events/attendance/add:
+    $ref: "./components/pathItems/events@attendance@add.yml"
+  /events/attendance/delete:
+    $ref: "./components/pathItems/events@attendance@delete.yml"
+  /events/attendance/list:
+    $ref: "./components/pathItems/events@attendance@list.yml"
+  /events/attendance/eligible:
+    $ref: "./components/pathItems/events@attendance@eligible.yml"
+  # Contributions
+  /giving/list:
+    $ref: "./components/pathItems/giving@list.yml"
+  /giving/add:
+    $ref: "./components/pathItems/giving@add.yml"
+  /giving/edit:
+    $ref: "./components/pathItems/giving@edit.yml"
+  /giving/delete:
+    $ref: "./components/pathItems/giving@delete.yml"
+  /giving/view:
+    $ref: "./components/pathItems/giving@view.yml"
+  /funds/list:
+    $ref: "./components/pathItems/funds@list.yml"
+  # Pledges
+  /pledges/list_campaigns:
+    $ref: "./components/pathItems/pledges@list_campaigns.yml"
+  /pledges/list_pledges:
+    $ref: "./components/pathItems/pledges@list_pledges.yml"
+  # Forms
+  /forms/list_forms:
+    $ref: "./components/pathItems/forms@list_forms.yml"
+  /forms/list_form_fields:
+    $ref: "./components/pathItems/forms@list_form_fields.yml"
+  /forms/list_form_entries:
+    $ref: "./components/pathItems/forms@list_form_entries.yml"
+  /forms/remove_form_entry:
+    $ref: "./components/pathItems/forms@remove_form_entry.yml"
+  # Volunteers
+  /volunteers/list:
+    $ref: "./components/pathItems/volunteers@list.yml"
+  /volunteers/add:
+    $ref: "./components/pathItems/volunteers@add.yml"
+  /volunteers/remove:
+    $ref: "./components/pathItems/volunteers@remove.yml"
+  /volunteers/update:
+    $ref: "./components/pathItems/volunteers@update.yml"
+  /volunteers/list_roles:
+    $ref: "./components/pathItems/volunteers@list_roles.yml"
+  /volunteers/add_role:
+    $ref: "./components/pathItems/volunteers@add_role.yml"
+  /volunteers/remove_role:
+    $ref: "./components/pathItems/volunteers@remove_role.yml"
+  # Families
+  /families/create:
+    $ref: "./components/pathItems/families@create.yml"
+  /families/destroy:
+    $ref: "./components/pathItems/families@destroy.yml"
+  /families/add:
+    $ref: "./components/pathItems/families@add.yml"
+  /families/remove:
+    $ref: "./components/pathItems/families@remove.yml"
+  # Account
+  /account/summary:
+    $ref: "./components/pathItems/account@summary.yml"
+  /account/list_log:
+    $ref: "./components/pathItems/account@list_log.yml"
+components:
+  securitySchemes:
+    ApiKey:
+      $ref: "./components/securitySchemes/ApiKey.yml"

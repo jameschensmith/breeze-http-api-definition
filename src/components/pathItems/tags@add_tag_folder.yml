@@ -1,0 +1,44 @@
+get:
+  tags: [Tags]
+  operationId: add-tag-folder
+  summary: Add tag folder
+  description: Add a new tag folder.
+  parameters:
+    - name: name
+      description: The name of the folder.
+      in: query
+      schema:
+        type: string
+        example: Youth Group
+    - name: parent_id
+      description: |
+        The specific parent folder to place this folder within. If omitted, the
+        folder will be placed on the top level.
+      in: query
+      schema:
+        type: number
+        example: 5023
+  responses:
+    "200":
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+          example:
+            [
+              {
+                "id": "1234567",
+                "parent_id": "1240",
+                "name": "Youth Group",
+                "created_on": "2017-06-05 18:12:34",
+              },
+            ]
+  x-codeSamples:
+    - lang: PHP
+      source: |
+        require_once('breeze/breeze.php');
+        $breeze = new Breeze('your_api_key');
+        $tags = $breeze->url('https://yoursubdomain.breezechms.com/api/tags/add_tag_folder?name=Youth Group');

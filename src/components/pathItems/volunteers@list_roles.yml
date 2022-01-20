@@ -1,0 +1,43 @@
+get:
+  tags: [Volunteers]
+  operationId: list-volunteer-roles
+  summary: List volunteer roles
+  description: List the volunteer roles for a specific event.
+  parameters:
+    - name: instance_id
+      description: |
+        The id of the event instance you want to retrieve the volunteer roles
+        for.
+      in: query
+      schema:
+        type: number
+        example: 123456
+    - name: show_quantity
+      description: |
+        Option to return quantity requested for each role. 1 = show quantity
+        for role.
+      in: query
+      schema:
+        type: number
+        example: 1
+  responses:
+    "200":
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+          example:
+            [
+              { "id": "9627", "name": "Teacher", "quantity": "2" },
+              { "id": "9628", "name": "Greeter", "quantity": "0" },
+              { "id": "9629", "name": "Small Group Leader", "quantity": "1" },
+            ]
+  x-codeSamples:
+    - lang: PHP
+      source: |
+        require_once('breeze/breeze.php');
+        $breeze = new Breeze('your_api_key');
+        $roles = $breeze->url('https://yoursubdomain.breezechms.com/api/volunteers/list_roles?instance_id=123456&show_quantity=1');

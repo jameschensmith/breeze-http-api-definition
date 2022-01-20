@@ -1,0 +1,19 @@
+get:
+  tags: [Tags]
+  operationId: delete-tag-folder
+  summary: Delete tag folder
+  description: Delete a tag folder.
+  responses:
+    "200":
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: boolean
+          example: true
+  x-codeSamples:
+    - lang: PHP
+      source: |
+        require_once('breeze/breeze.php');
+        $breeze = new Breeze('your_api_key');
+        $tags = $breeze->url('https://yoursubdomain.breezechms.com/api/tags/delete_tag_folder?folder_id=12345');

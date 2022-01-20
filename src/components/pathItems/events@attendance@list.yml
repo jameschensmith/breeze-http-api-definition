@@ -1,0 +1,116 @@
+get:
+  tags: [Check In]
+  operationId: list-attendance
+  summary: List attendance
+  description: List attendance from a given event.
+  parameters:
+    - name: instance_id
+      description: |
+        The ID of the instance you'd like to return the attendance for.
+      in: query
+      schema:
+        type: number
+        example: 190152081
+    - name: details
+      description: |
+        If set to true, details of the person will be included in the response.
+      in: query
+      schema:
+        type: boolean
+        example: true
+        default: false
+    - name: type
+      description: |
+        Determines if result should contain people or anonymous head count by
+        setting to either 'person' or 'anonymous'.
+      in: query
+      schema:
+        type: string
+        example: anonymous
+        default: person
+  responses:
+    "200":
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+          example:
+            [
+              {
+                "instance_id": "3778451",
+                "person_id": "824512",
+                "check_out": "0000-00-00 00:00:00",
+                "created_on": "2020-12-09 11:01:33",
+                "details":
+                  {
+                    "id": "824512",
+                    "first_name": "Carol",
+                    "force_first_name": "Carol",
+                    "last_name": "Adams",
+                    "thumb_path": "img/profiles/upload/thumbnails/123456789.jpg",
+                    "path": "img/profiles/upload/123456789.jpg",
+                    "details":
+                      {
+                        "gender": "Female",
+                        "birthdate": "2013-12-26",
+                        "age_years": "1",
+                        "age_months": "11",
+                        "age_days": "14",
+                        "mobile": "123-123-1234",
+                        "email_primary": "email@address.com",
+                        "street_address": "123 Test St",
+                        "city": "Holland",
+                        "state": "MI",
+                        "zip": "49424",
+                        "longitude": "",
+                        "latitude": "",
+                      },
+                  },
+              },
+              {
+                "instance_id": "3778451",
+                "person_id": "981238123",
+                "check_out": "0000-00-00 00:00:00",
+                "created_on": "2020-12-09 11:01:34",
+                "details":
+                  {
+                    "id": "1291272",
+                    "first_name": "Luther",
+                    "force_first_name": "Luther",
+                    "last_name": "Anderson",
+                    "thumb_path": "",
+                    "path": "img/profiles/generic/blue.jpg",
+                    "details":
+                      {
+                        "gender": "Male",
+                        "birthdate": "2001-08-21",
+                        "age_years": "14",
+                        "age_months": "3",
+                        "age_days": "19",
+                        "school_id": "4743",
+                        "school": [],
+                        "graduation_year": "2019",
+                        "grade_name": "9th",
+                        "home": "(616) 555-5555",
+                        "mobile": "(616) 555-5555",
+                        "work": "555-5555",
+                        "email_primary": "luther_anderson@breezechms.com",
+                        "street_address": "450 Fulton Ave SE",
+                        "city": "Grand Rapids",
+                        "state": "MI",
+                        "zip": "49503",
+                        "longitude": "-85.6581776129543",
+                        "latitude": "42.9629853284722",
+                      },
+                  },
+              },
+            ]
+  x-codeSamples:
+    - lang: PHP
+      source: |
+        require_once('breeze/breeze.php');
+        $breeze = new Breeze('your_api_key');
+        $attendance = $breeze->url('https://yoursubdomain.breezechms.com/api/events/attendance/list?instance_id=12345&details=true');
